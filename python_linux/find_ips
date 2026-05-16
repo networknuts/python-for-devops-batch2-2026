@@ -1,0 +1,24 @@
+#!/usr/bin/python3.10
+
+import re 
+import sys 
+
+raw_ip_logfile = sys.argv[1]
+
+f = open(raw_ip_logfile,"r")
+ip_logdata = f.read()
+f.close()
+
+matches = re.findall(r"\d+\.\d+\.\d+\.\d+",ip_logdata)
+
+print("\nIPs extracted successfully!\n")
+
+result_ip_file = sys.argv[2]
+
+f = open(result_ip_file,"w")
+for line in matches:
+    f.write(line+"\n")
+
+f.close()
+
+print(f"\nSaved Results to --> {result_ip_file}")
