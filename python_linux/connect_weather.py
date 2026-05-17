@@ -1,6 +1,7 @@
 import requests
 from dotenv import load_dotenv
 import os 
+import sys 
 
 load_dotenv()
 
@@ -12,8 +13,10 @@ WEATHER_URL = f"https://api.openweathermap.org/data/2.5/weather?zip={WEATHER_ZIP
 
 result = requests.get(WEATHER_URL)
 
-print("\nSTATUS CODE\n")
-print(result.status_code)
-
-print("\nOUTPUT\n")
-print(result.json())
+if result.status_code == 200: #200 status code is a successful connection
+    print("Connected successfully, fetching information")
+    print("="*40)
+    print(result.json())
+else:
+    print("Error: Something went wrong.")
+    sys.exit(1)
