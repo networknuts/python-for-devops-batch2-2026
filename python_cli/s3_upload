@@ -1,0 +1,40 @@
+#!/usr/bin/python3.10
+
+import argparse
+import boto3
+
+s3_cli_description = """
+This is a Python CLI Utility to upload a file onto an s3 bucket
+as a object. This utility assumes that you have boto3 installed as 
+a python dependency and it assumes you have local aws credentials already 
+configured.
+"""
+
+parser = argparse.ArgumentParser(
+                    prog='S3 Upload',
+                    description=s3_cli_description)
+
+# MANDATORY ARGUMENTS
+parser.add_argument('local_filename',help='The name or path of the local file to upload.')
+parser.add_argument('aws_bucket',help='The name of the AWS S3 Bucket to upload the file on.')
+# OPTIONAL ARGUMENTS
+parser.add_argument('-d', '--destination-name',help='The name of the object when uploaded onto the S3 Bucket.')
+parser.add_argument('-v','--version',action='version',version='1.0')
+
+args = parser.parse_args()
+
+s3 = boto3.client("s3")
+
+
+try:
+    if args.destination_name:
+        s3.upload_file(args.local_filename,args.aws_bucket,args.destination_name)
+        print(f"{args.local_filename} ---> {args.aws_bucket} AS {args.destination_name}")
+        print("Uploaded successfully!")
+    else:
+        args.destination_name = args.local_filename
+        s3.upload_file(args.local_filename,args.aws_bucket,args.destination_name)
+        print(f"{args.local_filename} ---> {args.aws_bucket}")
+        print("Uploaded succesfully!")
+except Exception as e:
+    print(f"Error: {e}")

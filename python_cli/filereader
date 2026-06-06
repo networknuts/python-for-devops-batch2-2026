@@ -1,0 +1,28 @@
+#!/usr/bin/python3.10
+
+import argparse
+
+parser = argparse.ArgumentParser(
+    prog='filereader',
+    description='Python Linux CLI utility to read files.',
+    epilog='Written in Python by Network Nuts'
+)
+
+parser.add_argument('filename',help='The name of the file to read.')
+parser.add_argument('-n','--number',type=int,help='The number of lines to read.')
+parser.add_argument('-v','--version',action='version',version='1.0 built on 06/06/2026')
+
+args = parser.parse_args()
+
+try:
+    f = open(args.filename,"r")
+    if args.number:
+        n = args.number
+        for line in f.readlines()[0:n]:
+            print(line.strip())
+    else:
+        for line in f.readlines():
+            print(line.strip())
+except Exception as e:
+    print("Unable to open file")
+    print(f"Error: {e}")
